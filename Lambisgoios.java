@@ -10,20 +10,19 @@ public class Lambisgoios implements Team{
 	
 	public Robot buildRobot(GameSimulator s, int index){
 		if(index == 0)
-			return new Attacker(s);
+			return new Atacante(s);
 		if(index == 1)
-			return new Goalier(s);
+			return new Goleiro(s);
 
-		// By default, return a new attacker
-		return new Attacker(s);
+		return new Atacante(s);
 	}
-	
-	class Attacker extends RobotBasic{
-		Attacker(GameSimulator s){
+/////////////////////////////ATACANTE//////////////////////////////////////////
+	class Atacante extends RobotBasic{
+		Atacante(GameSimulator s){
 			super(s);
 		}
 		
-		float speedMultiplier = (float)Math.random() * 5 + 5;
+		float vloecidade = (float)Math.random() * 5 + 5;
 		
 		Sensor locator;
 
@@ -33,24 +32,23 @@ public class Lambisgoios implements Team{
 		}
 
 		public void loop(){
-			float angle = locator.readValue(0);
+			float angulo = locator.readValue(0);
 
-			setRotation(angle * speedMultiplier);
-			setSpeed(0.5f,0);
+			setRotation(angulo * vloecidade);
+			setSpeed(10,-5);
 			delay(100);
 		}
 	}
-	
-	class Goalier extends RobotBasic{
-		Goalier(GameSimulator s){
+//////////////////////////////GOLEIRO/ZAGA//////////////////////////////////////
+	class Goleiro extends RobotBasic{
+		Goleiro(GameSimulator s){
 			super(s);
 		}
 
-		//float divisor = (float)Math.random() * 150 + 70;
-      	float divisor = 1000;
+		  //float divisor = (float)Math.random() * 150 + 70;
+      	float limitador = 1000;
 		
 		Sensor locator;
-		// Front, left, back, right
 		Sensor[] ultrasonic_sensors = new Sensor[4];
 		
 		public void run(){
@@ -61,12 +59,13 @@ public class Lambisgoios implements Team{
 			ultrasonic_sensors[2] = getSensor("ULTRASONIC_BACK");
 			ultrasonic_sensors[3] = getSensor("ULTRASONIC_RIGHT");
 			
-			System.out.println("Running!");
+			System.out.println("Dibrando!");
 			while(true){
-				float angle = locator.readValue(0);
+				float angulo = locator.readValue(0);
 				
-				if(Math.abs(angle) < 90)
-				  setSpeed(10000f, angle * divisor);
+
+				if(Math.abs(angulo) < 90)
+				  setSpeed(10000f, angulo * limitador);
 				else
 					setSpeed(-1000f,0f);
 				
